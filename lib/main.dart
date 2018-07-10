@@ -44,9 +44,13 @@ class RandomWordsState extends State<RandomWords> {
       );
     }
 
+    // Returns everything on display.
     return Scaffold (
       appBar: AppBar(
         title: Text('Start Generator'),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
+          ],
         ),
         body: _buildSuggestion(),
     );
@@ -71,8 +75,39 @@ class RandomWordsState extends State<RandomWords> {
       onTap: () {
         setState(() {
           checkSaved ? _saved.remove(pair) : _saved.add(pair);
-        });
+      });
       },
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          final tiles = _saved.map((pair) {
+              return ListTile(
+                title: Text(
+                  pair.asPascalCase,
+                  style: _biggerFont
+                  ),
+              );
+            }
+          );
+
+          final divided = ListTile
+            .divideTiles(
+              context: context,
+              tiles: tiles
+            )
+            .toList();
+
+          return Scaffold(appBar: AppBar(
+            title: Text('Saved Suggestions'),
+          ),
+            body: ListView(children: divided),
+          );
+        },
+      ),
     );
   }
 }
