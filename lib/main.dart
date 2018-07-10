@@ -57,7 +57,7 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
-    final checkSaved = _saved.contains(pair)
+    final checkSaved = _saved.contains(pair);
 
     return ListTile(
       title: Text(
@@ -68,6 +68,11 @@ class RandomWordsState extends State<RandomWords> {
         checkSaved ? Icons.favorite : Icons.favorite_border,
         color: checkSaved ? Colors.red : null,
       ),
+      onTap: () {
+        setState(() {
+          checkSaved ? _saved.remove(pair) : _saved.add(pair);
+        });
+      },
     );
   }
 }
